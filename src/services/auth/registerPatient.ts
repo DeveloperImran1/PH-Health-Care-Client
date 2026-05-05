@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import z from "zod";
+import { loginUser } from "./loginUser";
 
 const registerValidationZodSchema = z
   .object({
@@ -75,12 +76,22 @@ export const registerPatient = async (
         method: "POST",
         body: newFormData,
       },
-    ).then((res) => res.json());
+    );
+    const result = await res.json();
+    if (result.success) {
+      await loginUser(_currentState, formData);
+    }
 
-    console.log(res, "response from api");
-    return res;
-  } catch (error) {
+    return result;
+  } catch (error: any) {
+    // Re-throw NEXT_REDIRECT errors so Next.js can handle them
+    if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+      throw error; // aikhane kinto throw new Error() kortesina. Aikhane sudho throw error. kortesi. Jeita nextJS er error ke re-throw kore.
+    }
     console.log(error);
-    return error;
+    return {
+      success: false,
+      message: `${process.env.NODE_ENV === "development" ? error.message : "Registration Failed. Please try again."}`,
+    };
   }
 };
