@@ -6,26 +6,13 @@ import {
   isValidRedirectForRole,
   UserRole,
 } from "@/lib/auth-utils";
+import { serverFetch } from "@/lib/server-fetch";
+import { zodValidator } from "@/lib/zodValidator";
+import { loginValidationZodSchema } from "@/zod/auth.validation";
 import { parse } from "cookie";
-
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redirect } from "next/navigation";
-import z from "zod";
 import { setCookie } from "./tokenHandler";
-
-const loginValidationZodSchema = z.object({
-  email: z.email({
-    message: "Email is required",
-  }),
-  password: z
-    .string("Password is required")
-    .min(6, {
-      error: "Password is required and must be at least 6 characters long",
-    })
-    .max(100, {
-      error: "Password must be at most 100 characters long",
-    }),
-});
 
 export const loginUser = async (
   _currentState: any,
@@ -35,31 +22,25 @@ export const loginUser = async (
     const redirectTo = formData.get("redirect") || null;
     let accessTokenObject: null | any = null;
     let refreshTokenObject: null | any = null;
-    const loginData = {
+    const payload = {
       email: formData.get("email"),
       password: formData.get("password"),
     };
 
-    const validatedFields = loginValidationZodSchema.safeParse(loginData);
-
-    if (!validatedFields.success) {
-      return {
-        success: false,
-        errors: validatedFields.error.issues.map((issue) => {
-          return {
-            field: issue.path[0],
-            message: issue.message,
-          };
-        }),
-      };
+    if (zodValidator(payload, loginValidationZodSchema).success === false) {
+      return zodValidator(payload, loginValidationZodSchema);
     }
 
-    // aikhane login data ke kinto formData te convert kore send korini. Karon backend a api data ta json format a nissa. formData format a noi. tai JSON.stiryfy(loginData) kore sudho send koresi. and headers dita hoiase. headers er moddhe bole dita hobe content er type json.
-    const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-      method: "POST",
-      body: JSON.stringify(loginData),
+    const validatedPayload = zodValidator(
+      payload,
+      loginValidationZodSchema,
+    ).data;
+
+    // aikhane login data ke kinto formData te convert kore send korini. Karon backend a api data ta json format a nissa. formData format a noi. tai JSON.stiryfy(validatedPayload) kore sudho send koresi. and headers dita hoiase. headers er moddhe bole dita hobe content er type json.
+    const res = await serverFetch.post("/auth/login", {
+      body: JSON.stringify(validatedPayload),
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", // backend a formData er maddhome data recive korle ai content type aikhan theke bole dita hotona. Jeheto json data get korbe, jai data type json hobe. Aita bole dita hosse.
       },
     });
 
@@ -92,7 +73,6 @@ export const loginUser = async (
     }
 
     // Upore cookie use koresi, oita akta npm package. But cookies() aita nextjs er akkta function. Jeita browser a cookie te cookie set kore. 2ta different.
-
     await setCookie("accessToken", accessTokenObject.accessToken, {
       secure: true,
       httpOnly: true,
@@ -121,10 +101,7 @@ export const loginUser = async (
     const userRole: UserRole = verifiedToken.role;
 
     if (!result.success) {
-      // throw new Error(result.message || "Login failed");
-      throw new Error(
-        `${process.env.NODE_ENV === "development" ? result.message : "Login failed"}`,
-      );
+      throw new Error(result.message || "Login failed");
     }
 
     if (redirectTo) {
@@ -140,7 +117,7 @@ export const loginUser = async (
   } catch (error: any) {
     // Re-throw NEXT_REDIRECT errors so Next.js can handle them
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
-      throw error; // aikhane kinto throw new Error() kortesina. Aikhane sudho throw error. kortesi. Jeita nextJS er error ke re-throw kore.
+      throw error;
     }
     console.log(error);
     return {
