@@ -1,3 +1,5 @@
+import { getCookie } from "@/services/auth/tokenHandler";
+
 const BACKEND_API_URL =
   process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:5000/api/v1";
 
@@ -10,7 +12,7 @@ const serverFetchHelper = async (
 
   console.log({ body: options.body });
 
-  // const accessToken = await getCookie("accessToken");
+  const accessToken = await getCookie("accessToken");
 
   const response = await fetch(`${BACKEND_API_URL}${endpoint}`, {
     headers: {
@@ -21,7 +23,7 @@ const serverFetchHelper = async (
 
       // ...(accessToken ? { "Authorization": accessToken } : {}), // Ar backend a Barer use na korle direct sudho token ta pass korlei hobe.
 
-      // Cookie: accessToken ? `accessToken=${accessToken}` : "",  // Amra jeheto cookie theke get kortesi backend a tai, aivabe send korbo.
+      Cookie: accessToken ? `accessToken=${accessToken}` : "", // Amra jeheto cookie theke get kortesi backend a tai, aivabe send korbo.
     },
     ...restOptions,
   });
