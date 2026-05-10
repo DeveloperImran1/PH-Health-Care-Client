@@ -11,7 +11,6 @@ export const registerPatient = async (
   formData: any,
 ): Promise<any> => {
   try {
-    console.log(formData.get("address"));
     const payload = {
       name: formData.get("name"),
       address: formData.get("address"),
