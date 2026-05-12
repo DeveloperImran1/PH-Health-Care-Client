@@ -14,7 +14,7 @@ const AdminSpecialitiesManagementPage = async () => {
         <RefreshButton />
       </div>
       <Suspense fallback={<TableSkeleton columns={2} rows={10} />}>
-        <SpecialitiesTable specialities={result?.data} />
+        <SpecialitiesTable specialities={result.data} />
       </Suspense>
     </div>
   );

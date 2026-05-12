@@ -20,7 +20,7 @@ const RefreshButton = ({
 
   const handleRefresh = () => {
     startTransition(() => {
-      router.refresh();
+      router.push(window.location.pathname);
     });
   };
   return (

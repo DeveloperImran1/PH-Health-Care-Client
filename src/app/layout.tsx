@@ -16,9 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PH Healthcare",
-  description:
-    "A healthcare application for managing patient records and appointments.",
+  title: "PH-Health-Care",
+  description: "A healthcare application built with Next.js",
 };
 
 export default function RootLayout({
@@ -27,13 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         {children}
-        <Toaster position="top-right" richColors></Toaster>
+        <Toaster position="bottom-right" richColors />
         <LoginSuccessToast />
         <LogoutSuccessToast />
       </body>

@@ -19,7 +19,9 @@ const RegisterPage = () => {
                 Enter your information below to create your account
               </CardDescription>
             </CardHeader>
-            <CardContent>{<RegisterForm />}</CardContent>
+            <CardContent>
+              <RegisterForm />
+            </CardContent>
           </Card>
         </div>
       </div>

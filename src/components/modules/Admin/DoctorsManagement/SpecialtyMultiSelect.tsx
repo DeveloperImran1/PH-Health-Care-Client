@@ -46,7 +46,7 @@ const SpecialtyMultiSelect = ({
         type="hidden"
         name="specialties"
         value={JSON.stringify(
-          isEdit ? getNewSpecialties() : selectedSpecialtyIds,
+          isEdit ? getNewSpecialties() : selectedSpecialtyIds
         )}
       />
       {isEdit && (

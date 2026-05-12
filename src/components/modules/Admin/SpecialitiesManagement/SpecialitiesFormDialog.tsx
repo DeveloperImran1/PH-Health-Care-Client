@@ -10,7 +10,7 @@ import {
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { createSpeciality } from "@/services/admin/specialitiesManagement";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface ISpecialitiesFormDialogProps {
@@ -24,7 +24,14 @@ const SpecialitiesFormDialog = ({
   onClose,
   onSuccess,
 }: ISpecialitiesFormDialogProps) => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [state, formAction, pending] = useActionState(createSpeciality, null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setSelectedFile(file || null);
+  };
 
   useEffect(() => {
     if (state && state?.success) {
@@ -33,28 +40,57 @@ const SpecialitiesFormDialog = ({
       onClose();
     } else if (state && !state.success) {
       toast.error(state.message);
+
+      if (selectedFile && fileInputRef.current) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(selectedFile);
+        fileInputRef.current.files = dataTransfer.files;
+      }
     }
-  }, [state]);
+  }, [state, onSuccess, onClose, selectedFile]);
+
+  const handleClose = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    if (selectedFile) {
+      setSelectedFile(null); // Clear preview
+    }
+    formRef.current?.reset(); // Clear form
+    onClose(); // Close dialog
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add New Specialty</DialogTitle>
         </DialogHeader>
 
-        <form action={formAction} className="space-y-4">
+        <form ref={formRef} action={formAction} className="space-y-4">
           <Field>
             <FieldLabel htmlFor="title">Title</FieldLabel>
-            <Input id="title" name="title" placeholder="Cardiology" required />
+            <Input
+              id="title"
+              name="title"
+              placeholder="Cardiology"
+              defaultValue={state?.formData?.title || ""}
+            />
             <InputFieldError field="title" state={state} />
           </Field>
 
           <Field>
             <FieldLabel htmlFor="file">Upload Icon</FieldLabel>
 
-            <Input id="file" name="file" type="file" accept="image/*" />
-            <InputFieldError field="file" state={state} />
+            <Input
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              id="file"
+              name="file"
+              type="file"
+              accept="image/*"
+            />
+            <InputFieldError field="icon" state={state} />
           </Field>
 
           <div className="flex justify-end gap-2">

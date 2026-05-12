@@ -1,11 +1,11 @@
-"use server";
+"use server"
 
 import { redirect } from "next/navigation";
-import { deleteCookie } from "./tokenHandler";
+import { deleteCookie } from "./tokenHandlers";
 
 export const logoutUser = async () => {
-  await deleteCookie("accessToken");
-  await deleteCookie("refreshToken");
+    await deleteCookie("accessToken");
+    await deleteCookie("refreshToken");
 
-  redirect("/login?loggedOut=true");
-};
+    redirect("/login?loggedOut=true");
+}

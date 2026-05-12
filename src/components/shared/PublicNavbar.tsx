@@ -1,4 +1,4 @@
-import { getCookie } from "@/services/auth/tokenHandler";
+import { getCookie } from "@/services/auth/tokenHandlers";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";

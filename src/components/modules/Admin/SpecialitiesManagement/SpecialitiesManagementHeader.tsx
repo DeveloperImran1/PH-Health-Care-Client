@@ -16,11 +16,23 @@ const SpecialitiesManagementHeader = () => {
       router.refresh();
     });
   };
+
+  const [dialogKey, setDialogKey] = useState(0);
+
+  const handleOpenDialog = () => {
+    setDialogKey((prev) => prev + 1); // Force remount
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
   return (
     <>
       <SpecialitiesFormDialog
+        key={dialogKey}
         open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        onClose={handleCloseDialog}
         onSuccess={handleSuccess}
       />
 
@@ -30,7 +42,7 @@ const SpecialitiesManagementHeader = () => {
         action={{
           label: "Add Specialty",
           icon: Plus,
-          onClick: () => setIsDialogOpen(true),
+          onClick: handleOpenDialog,
         }}
       />
     </>

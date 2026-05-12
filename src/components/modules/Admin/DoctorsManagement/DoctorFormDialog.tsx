@@ -44,7 +44,7 @@ const DoctorFormDialog = ({
   const isEdit = !!doctor;
 
   const [gender, setGender] = useState<"MALE" | "FEMALE">(
-    doctor?.gender || "MALE",
+    doctor?.gender || "MALE"
   );
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -56,7 +56,7 @@ const DoctorFormDialog = ({
 
   const [state, formAction, pending] = useActionState(
     isEdit ? updateDoctor.bind(null, doctor.id!) : createDoctor,
-    null,
+    null
   );
 
   const handleClose = () => {
@@ -69,8 +69,6 @@ const DoctorFormDialog = ({
     formRef.current?.reset(); // Clear form
     onClose(); // Close dialog
   };
-
-  console.log({ state });
 
   const specialtySelection = useSpecialtySelection({
     doctor,
@@ -179,7 +177,7 @@ const DoctorFormDialog = ({
               removedSpecialtyIds={specialtySelection.removedSpecialtyIds}
               currentSpecialtyId={specialtySelection.currentSpecialtyId}
               availableSpecialties={specialtySelection.getAvailableSpecialties(
-                specialities!,
+                specialities!
               )}
               isEdit={isEdit}
               onCurrentSpecialtyChange={
@@ -390,8 +388,8 @@ const DoctorFormDialog = ({
               {pending
                 ? "Saving..."
                 : isEdit
-                  ? "Update Doctor"
-                  : "Create Doctor"}
+                ? "Update Doctor"
+                : "Create Doctor"}
             </Button>
           </div>
         </form>

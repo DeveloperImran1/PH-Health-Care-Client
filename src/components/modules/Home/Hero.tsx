@@ -1,9 +1,11 @@
-import { LargeSparkleIcon, SparkleIcon } from "@/assets/icons/Sparklelcon";
+import { Search, Calendar, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { HeroProps } from "@/types/heroProps";
-import { Calendar, Search, Star } from "lucide-react";
+import { LargeSparkleIcon, SparkleIcon } from "@/assets/icons/SparkleIcon";
+
+
 
 export function Hero({
   badge = {

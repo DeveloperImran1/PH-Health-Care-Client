@@ -50,7 +50,7 @@ const SpecialitiesTable = ({ specialities }: SpecialityTableProps) => {
         data={specialities}
         columns={specialitiesColumns}
         onDelete={handleDelete}
-        getRowKey={(speciality) => speciality?.id}
+        getRowKey={(speciality) => speciality.id}
         emptyMessage="No specialities found"
       />
 
