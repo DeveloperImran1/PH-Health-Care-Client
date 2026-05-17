@@ -14,6 +14,7 @@ import { IDoctor } from "@/types/doctor.interface";
 import { IDoctorSchedule } from "@/types/schedule.interface";
 import { format } from "date-fns";
 import { Calendar, Clock } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface BookAppointmentDialogProps {
@@ -27,6 +28,7 @@ export default function BookAppointmentDialog({
   isOpen,
   onClose,
 }: BookAppointmentDialogProps) {
+  const router = useRouter();
   const doctorSchedules = doctor.doctorSchedules || [];
   const [selectedSchedule, setSelectedSchedule] =
     useState<IDoctorSchedule | null>(null);
@@ -62,6 +64,14 @@ export default function BookAppointmentDialog({
   // Check if we have schedules but no schedule data (API issue)
   const hasSchedulesWithoutData =
     doctorSchedules.length > 0 && groupedSchedules.length === 0;
+
+  const handleContinue = () => {
+    if (selectedSchedule) {
+      router.push(
+        `/dashboard/book-appointment/${doctor.id}/${selectedSchedule.scheduleId}`
+      );
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
@@ -157,6 +167,9 @@ export default function BookAppointmentDialog({
 
           <DialogFooter>
             <Button onClick={handleCloseModal}>Close</Button>
+            <Button onClick={handleContinue} disabled={!selectedSchedule}>
+              Continue
+            </Button>
           </DialogFooter>
         </>
       </DialogContent>

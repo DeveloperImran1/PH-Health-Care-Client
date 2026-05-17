@@ -158,7 +158,7 @@ const DoctorViewDetailDialog = ({
                           variant="outline"
                           className="px-4 py-2 text-sm"
                         >
-                          {specialty.specialties?.title || "Unknown"}
+                          {specialty.specialities?.title || "Unknown"}
                         </Badge>
                       ))}
                     </div>

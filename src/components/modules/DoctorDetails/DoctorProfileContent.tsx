@@ -67,7 +67,7 @@ const DoctorProfileContent = ({ doctor }: DoctorProfileContentProps) => {
                   <div className="flex flex-wrap gap-2">
                     {doctor.doctorSpecialties.map((specialty) => (
                       <Badge key={specialty.specialitiesId} variant="secondary">
-                        {specialty.specialties?.title || "Specialty"}
+                        {specialty.specialities?.title || "Specialty"}
                       </Badge>
                     ))}
                   </div>

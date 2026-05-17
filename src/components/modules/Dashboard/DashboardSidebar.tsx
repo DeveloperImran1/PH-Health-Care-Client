@@ -8,7 +8,7 @@ import DashboardSidebarContent from "./DashboardSidebarContent";
 const DashboardSidebar = async () => {
   const userInfo = (await getUserInfo()) as UserInfo;
 
-  const navItems: NavSection[] = getNavItemsByRole(userInfo.role);
+  const navItems: NavSection[] = await getNavItemsByRole(userInfo.role);
   const dashboardHome = getDefaultDashboardRoute(userInfo.role);
 
   return (

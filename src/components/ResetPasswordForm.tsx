@@ -11,21 +11,50 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { resetPassword } from "@/services/auth/auth.service";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
-const ResetPasswordForm = ({ redirect }: { redirect?: string }) => {
+interface ResetPasswordFormProps {
+  redirect?: string;
+  email?: string;
+  token?: string;
+}
+
+const ResetPasswordForm = ({
+  redirect,
+  email,
+  token,
+}: ResetPasswordFormProps) => {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState(resetPassword, null);
 
   useEffect(() => {
     if (state && !state.success && state.message) {
       toast.error(state.message);
     }
-  }, [state]);
+
+    if (state && state.success && state.redirectToLogin) {
+      toast.success(state.message);
+      setTimeout(() => {
+        router.push(redirect || "/login");
+      }, 1500);
+    }
+  }, [state, router, redirect]);
 
   return (
     <form action={formAction}>
       {redirect && <Input type="hidden" name="redirect" value={redirect} />}
+      {email && <Input type="hidden" name="email" value={email} />}
+      {token && <Input type="hidden" name="token" value={token} />}
+      {email && token && (
+        <Input type="hidden" name="isEmailReset" value="true" />
+      )}
+      <Input
+        type="hidden"
+        name="isEmailReset"
+        value={email && token ? "true" : "false"}
+      />
       <FieldGroup>
         <div className="grid grid-cols-1 gap-4">
           {/* New Password */}

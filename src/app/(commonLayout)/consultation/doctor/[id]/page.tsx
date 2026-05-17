@@ -2,6 +2,8 @@ import DoctorProfileContent from "@/components/modules/DoctorDetails/DoctorProfi
 import DoctorReviews from "@/components/modules/DoctorDetails/DoctorReviews";
 import { getDoctorById } from "@/services/admin/doctorManagement";
 
+export const revalidate = 600;
+
 const DoctorDetailPage = async ({
   params,
 }: {

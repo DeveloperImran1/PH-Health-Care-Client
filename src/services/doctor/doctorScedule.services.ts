@@ -1,11 +1,17 @@
 "use server"
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { serverFetch } from "@/lib/server-fetch";
+import { revalidateTag } from "next/cache";
 
 export async function getDoctorOwnSchedules(queryString?: string) {
     try {
         // const response = await serverFetch.get(`/doctor-schedule/my-schedule${queryString ? `?${queryString}` : ""}`);
-        const response = await serverFetch.get(`/doctor-schedule${queryString ? `?${queryString}` : ""}`);
+        const response = await serverFetch.get(`/doctor-schedule${queryString ? `?${queryString}` : ""}`, {
+            next: {
+                tags: ["my-schedules", "doctor-schedules-list"],
+                revalidate: 180, // 3 minutes
+            }
+        });
         const result = await response.json();
         return {
             success: result.success,
@@ -46,6 +52,11 @@ export async function createDoctorSchedule(scheduleIds: string[]) {
         });
 
         const result = await response.json();
+        if (result.success) {
+            revalidateTag('my-schedules', { expire: 0 });
+            revalidateTag('doctor-schedules-list', { expire: 0 });
+            revalidateTag('schedules-list', { expire: 0 });
+        }
         return result;
     } catch (error: any) {
         console.log(error);
@@ -60,6 +71,12 @@ export async function deleteDoctorOwnSchedule(scheduleId: string) {
     try {
         const response = await serverFetch.delete(`/doctor-schedule/${scheduleId}`);
         const result = await response.json();
+
+        if (result.success) {
+            revalidateTag('my-schedules', { expire: 0 });
+            revalidateTag('doctor-schedules-list', { expire: 0 });
+            revalidateTag('schedules-list', { expire: 0 });
+        }
 
         return {
             success: result.success,

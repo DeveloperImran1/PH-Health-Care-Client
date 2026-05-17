@@ -59,6 +59,8 @@ const DoctorFormDialog = ({
     null
   );
 
+  const prevStateRef = useRef(state);
+
   const handleClose = () => {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -81,6 +83,9 @@ const DoctorFormDialog = ({
   };
 
   useEffect(() => {
+    if (state === prevStateRef.current) return;
+    prevStateRef.current = state;
+
     if (state?.success) {
       toast.success(state.message);
       if (formRef.current) {
@@ -88,7 +93,7 @@ const DoctorFormDialog = ({
       }
       onSuccess();
       onClose();
-    } else if (state && !state.success) {
+    } else if (state && !state.success && state.message) {
       toast.error(state.message);
 
       if (selectedFile && fileInputRef.current) {
