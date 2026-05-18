@@ -93,13 +93,13 @@ export function AppointmentPieChart({
   };
 
   // Format data for recharts
-  const formattedData = data.map((item) => ({
-    name: item.status
+  const formattedData = data?.map((item) => ({
+    name: item?.status
       .replace(/_/g, " ")
       .toLowerCase()
       .replace(/\b\w/g, (l) => l.toUpperCase()),
-    value: Number(item.count),
-    originalStatus: item.status,
+    value: Number(item?.count),
+    originalStatus: item?.status,
   }));
 
   const getColor = (index: number, status?: string) => {
@@ -114,7 +114,11 @@ export function AppointmentPieChart({
   };
 
   // Handle empty data
-  if (formattedData.length === 0 || formattedData.every((d) => d.value === 0)) {
+  if (
+    !formattedData ||
+    formattedData.length === 0 ||
+    formattedData.every((d) => d.value === 0)
+  ) {
     return (
       <Card className="col-span-3">
         <CardHeader>
