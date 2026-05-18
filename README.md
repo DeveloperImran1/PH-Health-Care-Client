@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PH-Healthcare 🏥
 
-## Getting Started
+A comprehensive, full-stack smart healthcare management platform designed to streamline operations for patients, doctors, and administrators.
 
-First, run the development server:
+🔗 **Frontend Repository:** [PH-Health-Care-Client](https://github.com/DeveloperImran1/PH-Health-Care-Client)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔐 Demo Credentials
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can explore the live project using the following demo accounts. Each role has specific permissions and access levels.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 👤 Patient Account
 
-## Learn More
+- **Email:** `patient@gmail.com`
+- **Password:** `aaaaaa`
 
-To learn more about Next.js, take a look at the following resources:
+### 👨‍⚕️ Doctor Account
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Email:** `doctor@gmail.com`
+- **Password:** `aaaaaa`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 👑 Admin Account
 
-## Deploy on Vercel
+- **Email:** `admin1@gmail.com`
+- **Password:** `aaaaaa`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚀 Tech Stack
+
+### Frontend
+
+- **Framework:** Next.js (App Router)
+- **Library:** React
+- **Styling:** Tailwind CSS
+- **Language:** TypeScript
+
+### Backend (API)
+
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Language:** TypeScript
+- **ORM:** Prisma
+- **Database:** PostgreSQL
+
+---
+
+## ✨ Key Features
+
+- **Role-Based Access Control:** Distinct dashboards and functionalities for Admins, Doctors, and Patients.
+- **Patient Portal:** Patients can search for doctors, book appointments, and view medical records/prescriptions.
+- **Doctor Portal:** Doctors can manage their schedules, view upcoming appointments, and provide prescriptions to patients.
+- **Admin Dashboard:** Admins have full control over the platform, including user management, specialty creation, and monitoring overall activities.
+- **Secure Authentication:** Implementation of JWT (JSON Web Tokens) and secure HTTP-only cookies for robust security.
+- **Server-Side Rendering (SSR):** Optimized data fetching utilizing Next.js Server Components for faster load times and better SEO.
+
+---
+
+## 🛠️ Local Installation & Setup
+
+Follow these steps to run the project on your local machine.
+
+### Prerequisites
+
+- Node.js installed on your machine.
+- PostgreSQL database set up (Local or Cloud like Neon/Supabase).
